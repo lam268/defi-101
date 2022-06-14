@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import "./Whitelist.sol";
 
 contract Token is ERC721 {
     struct Project {
@@ -8,7 +10,7 @@ contract Token is ERC721 {
         string symbol;
         uint256 number;
     }
-    mapping(uint256 => Project) public a;
+    mapping(uint256 => Project) public projectList;
 
     constructor(string memory _name, string memory symbol)
         public
@@ -22,9 +24,9 @@ contract Token is ERC721 {
         string memory symbol
     ) public {
         _safeMint(_to, id);
-        a[id].name = name;
-        a[id].symbol = symbol;
-        a[id].number = id;
+        projectList[id].name = name;
+        projectList[id].symbol = symbol;
+        projectList[id].number = id;
     }
 
     function getProjectInformation(uint256 id)
@@ -32,6 +34,6 @@ contract Token is ERC721 {
         view
         returns (Project memory)
     {
-        return a[id];
+        return projectList[id];
     }
 }
